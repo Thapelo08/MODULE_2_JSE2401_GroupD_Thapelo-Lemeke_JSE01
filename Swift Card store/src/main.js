@@ -1,7 +1,12 @@
 import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { setupCounter } from '../counter.js'
+import Alpine from 'alpinejs'
+
+wondow.Alpine = Alpine
+
+Alpine.start()
 
 document.querySelector('#app').innerHTML = `
   <div>
