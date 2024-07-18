@@ -10,7 +10,8 @@
   <body class="bg-blue-200 text-black-700">
     <header class="sticky z-50 top-0">
       <nav class="bg-gray-500 border-gray-200 ">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div x-data="{isOpen: false}"
+         class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link to="/">
             <button class="flex items-center space-x-3 rtl:space-x-reverse">
               <img src="/public/online-shop.png" class="h-8" alt="Flowbite Logo" />
@@ -19,14 +20,11 @@
               </span>
             </button>
           </Link>
+          
           <button
-            x-on:click={toggleNavbar}
-            data-collapse-toggle="navbar-default"
-            type="button"
-            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
-            aria-controls="navbar-default"
-            aria-expanded="false"
-          >
+            @click="isOpen =!isOpen"
+            class="flex items-center"
+            @keydown.escape="isOpen = false">
             <span class="sr-only">Open main menu</span>
             <svg
               class="w-5 h-5"
@@ -108,6 +106,8 @@
         </div>
       </nav>
     </header>
+
+    
    
   
     <div id="app"></div>
