@@ -1,6 +1,6 @@
 import './style.css'
 import Alpine from 'alpinejs'
-import api from "./data/api.js"
+import { getCategories, fetchSingleProduct} from "./data/api.js"
 
 wondow.Alpine = Alpine
 
@@ -24,9 +24,21 @@ document.addEventListener("alpine:init", () => {
                            "Data fetching failed, please check your network connection");
                     
                 }
-                
+              const data = await response.json();
+              this.products = data;  
+            } catch (error) {
+                console.error(error);
             }
-        }
+          },
+         async init() {
+            const categories = await getCategories();
+            if (categories.error) {
+                console.error(categories.error);
+            } else {
+                console.log(categories.response);
+            }
+         }
+          
     }))
 })
 
