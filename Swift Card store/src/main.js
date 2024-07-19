@@ -6,4 +6,14 @@ wondow.Alpine = Alpine
 
 Alpine.start()
 
+document.addEventListener("alpine:init", () => {
+    Alpine.data("headerComponent", () => ({
+        init() {
+            console.log("Header component initialized");
+        },
+    }));
+
+    
+})
+
 
