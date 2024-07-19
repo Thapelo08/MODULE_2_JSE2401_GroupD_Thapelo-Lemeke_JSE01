@@ -37,9 +37,17 @@ document.addEventListener("alpine:init", () => {
             } else {
                 console.log(categories.response);
             }
-         }
+            
+            const singleProduct = await fetchSingleProduct(1);
+            if (singleProduct.error) {
+                console.error(singleProduct.error);
+            } else {
+                console.log(singleProduct.response);
+            }
+            this.fetchProducts();
+         },
           
-    }))
-})
+    }));
+});
 
 
