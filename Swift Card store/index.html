@@ -1,126 +1,336 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head> 
+  <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@1.2.0/dist/tailwind.min.css">
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SwiftCart - The fastest e-commerce store in SA</title>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Alpine Store</title>
   </head>
-  <body class="bg-blue-200 text-black-700">
-    <header class="sticky z-50 top-0">
-      <nav class="bg-gray-500 border-gray-200 ">
-        <div x-data="{isOpen: false}"
-         class="max-w-screen-xl flex flex-wrap items-right justify-between mx-auto p-4">
-          <Link to="/">
-            <button class="flex items-center space-x-3 rtl:space-x-reverse">
-              <img src="/public/online-shop.png" class="h-8" alt="Flowbite Logo" />
-              <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">
+  <body>
+    <header class="sticky z-50 top-0" x-data="{ isOpen: false}">
+      <nav class="bg-gray-500 border-gray-200">
+        <div
+        class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4"
+        >
+          <a href="/">
+            <button
+              type="button"
+              class="flex items-center space-x-3 rtl:space-x-reverse"
+            >
+              <img src="/online-shop.png" class="h-8" alt="Flowbite Logo" />
+              <span
+                class="self-center text-2xl font-semibold whitespace-nowrap text-white"
+              >
                 SwiftCart
               </span>
             </button>
-          </Link>
-          
+          </a>
+          <div>
+            <button
+              @click="isOpen = !isOpen"
+              data-collapse-toggle="navbar-default"
+              type="button"
+              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+              aria-controls="navbar-default"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              </svg>
+            </button>
+            <div
+              :class="{ 'hidden': !isOpen }"
+              class="hidden w-full md:block md:w-auto"
+              id="navbar-dropdown"
+            >
+              <ul
+                class="flex flex-col top-10 font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-500 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+              >
+                <li>
+                  <a
+                    href="/wishlist"
+                    class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                  >
+                    Wishlist
+                  </a>
+                </li>
+                <li class="hidden lg:block md:block relative">
+                  <a href="/cart">
+                    <div class="t-0 absolute left-3 -top-4">
+                      <p
+                        class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs-white text-white"
+                      >
+                        0
+                      </p>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="file: h-6 w-6 stroke-white cursor-pointer"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                      />
+                    </svg>
+                  </a>
+                </li>
+                <li class="lg:hidden md:hidden">
+                  <a
+                    href="/cart"
+                    class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                  >
+                    Cart
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/login"
+                    class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                  >
+                    Login
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <form
+      x-data="{ dropdownOpen: false, searchTerm: '', filterItem: 'All categories' }"
+    >
+      <div class="flex lg:w-[31.25rem] sm:w-[95%] md:w-full relative">
+        <button
+          @click="dropdownOpen = !dropdownOpen"
+          id="dropdown-button"
+          class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200"
+          type="button"
+        >
+          <span x-text="filterItem"></span>
+          <svg
+            class="w-2.5 h-2.5 ms-2.5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+        <div
+          id="dropdown"
+          class="z-10 absolute top-[100%] bg-white divide-y divide-gray-100 rounded-lg shadow w-44"
+          x-show="dropdownOpen"
+          @click.away="dropdownOpen = false"
+          style="display: none"
+        >
+          <ul
+            class="py-2 text-sm text-gray-700"
+            aria-labelledby="dropdown-button"
+          >
+            <li
+              @click="filterItem = 'All categories'; dropdownOpen = false"
+              class="inline-flex w-full px-4 py-2 hover:bg-gray-100"
+            >
+              All categories
+            </li>
+            <template x-for="name in ['Category1', 'Category2', 'Category3']">
+              <li>
+                <button
+                  @click="filterItem = name; dropdownOpen = false"
+                  type="button"
+                  class="inline-flex w-full px-4 py-2 hover:bg-gray-100"
+                  x-text="name"
+                ></button>
+              </li>
+            </template>
+          </ul>
+        </div>
+        <div class="relative w-full">
+          <input
+            type="search"
+            id="search-dropdown"
+            name="searchInput"
+            class="p-2.5 w-half z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Search products..."
+            x-model="searchTerm"
+          />
           <button
-            @click="isOpen =!isOpen"
-            class="flex"
-            @keydown.escape="isOpen = false">
-            <span class="sr-only">Open main menu</span>
+            type="submit"
+            class="w-half top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+          >
             <svg
-              class="w-5 h-5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              viewBox="0 0 17 14"
+              viewBox="0 0 20 20"
             >
               <path
                 stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
               />
             </svg>
+            <span class="sr-only">Search</span>
           </button>
-
-          <div
-            class="hidden w-full md:block md:w-auto"
-            id="navbar-dropdown"
-          >
-            <ul 
-                x-show.transtion.duration.1000ms.opacity="isOpen"
-                @click.away="isOpen = false" 
-            class="flex flex-col top-10 font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-500 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
-                 
-
-              <li>
-                <Link
-                to=""
-                  class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                >
-                  Wishlist
-                </Link>
-              </li>
-              <Link to="">
-                <li class="hidden lg:block md:block relative">
-                  <div class="t-0 absolute left-3 -top-4">
-                    <p class="flex h-2 w-2 items-center  justify-center rounded-full bg-red-500 p-3 text-xs text-white">
-                      2
-                    </p>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    class="file: h-6 w-6 stroke-white cursor-pointer"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                    />
-                  </svg>
-                </li>
-              </Link>
-              <li>
-                <Link
-                  to=""
-                  class="lg:hidden md:hidden py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                >
-                  Cart
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="login"
-                  class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 "
-                >
-                  Login
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
-      </nav>
-    </header>
-    <script>
+      </div>
+    </form>
+    <div
+      x-data="{ products: [], loading: true }"
+      x-init="
+        fetch('https://fakestoreapi.com/products/')
+            .then(response => response.json())
+            .then(data => {
+                products = data;
+                loading = false;
+            })
+        products = [
+            { id: 1, name: 'Product 1', image: 'image1.jpg', price: 10, quantity: 1 },
+            { id: 2, name: 'Product 2', image: 'image2.jpg', price: 15, quantity: 1 },
+            { id: 3, name: 'Product 3', image: 'image3.jpg', price: 20, quantity: 1 },
+  ];
+  "
+      x-show="!loading"
+      x-cloak
+    >
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4"
+      >
+        <!-- Iterate over products -->
+        <template x-for="product in products" :key="product.id">
+          <div
+            class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden"
+          >
+            <img
+              :src="product.image"
+              alt="Product Image"
+              class="w-full h-64 object-contain"
+            />
+            <div class="p-4">
+              <h3
+                class="text-lg font-semibold text-gray-900 mb-2 truncate"
+                x-text="product.title"
+              ></h3>
+              <p
+                class="text-gray-900 font-semibold"
+                x-text="'$' + product.price.toFixed(2)"
+              ></p>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
 
-      async function getLabel() {
-        let response = await fetch('https://fakestoreapi.com/products')
+    <div
+      role="status"
+      class="bg-white max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700"
+      x-show="loading"
+    >
+      <div
+        class="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700"
+      >
+        <svg
+          class="w-10 h-10 text-gray-200 dark:text-gray-600"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 16 20"
+        >
+          <path
+            d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"
+          />
+          <path
+            d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"
+          />
+        </svg>
+      </div>
+      <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+      <div
+        class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"
+      ></div>
+      <div
+        class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-10 mb-4"
+      ></div>
 
-        return await response.text()
-      }
+      <span class="sr-only">Loading...</span>
+    </div>
 
-    </script>
-   
-  
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
+    <div
+      role="status"
+      class="space-y-8 mt-6 sm:mt-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
+    >
+      <div
+        class="flex items-center justify-center w-full h-96 bg-gray-400 rounded sm:w-96 dark:bg-gray-700"
+      >
+        <svg
+          class="w-10 h-10 text-gray-500 dark:text-gray-600"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 18"
+          transform="scale(5)"
+        >
+          <path
+            d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"
+          />
+        </svg>
+      </div>
+      <div class="w-full -mt-10">
+        <div
+          class="h-4 bg-gray-400 rounded-full dark:bg-gray-700 max-w-[660px] mb-2.5"
+        ></div>
+        <div
+          class="h-2.5 bg-gray-400 rounded-full dark:bg-gray-700 w-48 mb-4"
+        ></div>
+        <div
+          class="h-2 bg-gray-400 rounded-full dark:bg-gray-700 max-w-[480px] mb-2.5"
+        ></div>
+        <div class="h-2 bg-gray-400 rounded-full dark:bg-gray-700 mb-2.5"></div>
+        <div
+          class="h-2 bg-gray-400 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"
+        ></div>
+        <div
+          class="h-2 bg-gray-400 rounded-full dark:bg-gray-700 max-w-[360px]"
+        ></div>
+      </div>
+      <span class="sr-only">Loading...</span>
+    </div>
   </body>
-
-
 </html>
-
