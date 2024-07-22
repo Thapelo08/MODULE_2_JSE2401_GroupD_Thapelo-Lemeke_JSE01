@@ -1,4 +1,4 @@
-import './style.css'
+/*import './style.css'
 import Alpine from 'alpinejs'
 import { getCategories, fetchSingleProduct} from "./data/api.js"
 
@@ -48,6 +48,6 @@ document.addEventListener("alpine:init", () => {
          },
           
     }));
-});
+});*/
 
 
